@@ -1,12 +1,12 @@
 <?PHP
 /*
-    Registration/Login script from HTML Form Guide
-    V1.0
+	Registration/Login script from HTML Form Guide
+	V1.0
 
-    This program is free software published under the
-    terms of the GNU Lesser General Public License.
-    http://www.gnu.org/copyleft/lesser.html
-    
+	This program is free software published under the
+	terms of the GNU Lesser General Public License.
+	http://www.gnu.org/copyleft/lesser.html
+
 
 This program is distributed in the hope that it will
 be useful - WITHOUT ANY WARRANTY; without even the
@@ -17,199 +17,199 @@ For updates, please visit:
 http://www.html-form-guide.com/php-form/php-registration-form.html
 http://www.html-form-guide.com/php-form/php-login-form.html
 
-*/
+ */
 require_once("class.phpmailer.php");
 require_once("formvalidator.php");
 
 class FGMembersite
 {
-    var $admin_email_1;
-    var $admin_email_2;
-    var $admin_email_3;
-    var $admin_email_4;
-    var $from_address;
-    
-    var $username;
-    var $pwd;
-    var $database;
-    var $tablename;
-    var $connection;
-    var $rand_key;
-    
-    var $error_message;
-    
-    //-----Initialization -------
-    function FGMembersite()
-    {
-        $this->sitename = 'doc.ic.ac.uk';
-        $this->rand_key = 'AzbKhnufuj558R4';
-    }
-    
-    function SetAdminEmail($email_1, $email_2 = '', $email_3 = '', $email_4 = '')
-    {
-        $this->admin_email_1 = $email_1;
-        $this->admin_email_2 = $email_2;
-        $this->admin_email_3 = $email_3;
-        $this->admin_email_4 = $email_4;
-    }
-    
-    function SetWebsiteName($sitename)
-    {
-        $this->sitename = $sitename;
-    }
-    
-    function SetRandomKey($key)
-    {
-        $this->rand_key = $key;
-    }
-    
-    //-------Main Operations ----------------------
-    function RegisterUser()
-    {
-        if(!isset($_POST['submitted']))
-        {
-           return false;
-        }
-        
-        $formvars = array();
-        
-        if(!$this->ValidateRegistrationSubmission())
-        {
-            return false;
-        }
-        
-        $this->CollectRegistrationSubmission($formvars);
-        
-        if(!$this->SaveToCSV($formvars))
-        {
-            return false;
-        }
-        
-        //if(!$this->SendUserRegistrationEmail($formvars))
-        //{
-        //    return false;
-        //}
+	var $admin_email_1;
+	var $admin_email_2;
+	var $admin_email_3;
+	var $admin_email_4;
+	var $from_address;
 
-        $this->SendAdminIntimationEmail($formvars);
-        
-        return true;
-    }
-    
-    //-------Public Helper functions -------------
-    function GetSelfScript()
-    {
-        return htmlentities($_SERVER['PHP_SELF']);
-    }    
-    
-    function SafeDisplay($value_name)
-    {
-        if(empty($_POST[$value_name]))
-        {
-            return'';
-        }
-        return htmlentities($_POST[$value_name]);
-    }
-    
-    function RedirectToURL($url)
-    {
-        header("Location: $url");
-        exit;
-    }
-    
-    function GetSpamTrapInputName()
-    {
-        return 'sp'.md5('KHGdnbvsgst'.$this->rand_key);
-    }
-    
-    function GetErrorMessage()
-    {
-        if(empty($this->error_message))
-        {
-            return '';
-        }
-        $errormsg = nl2br(htmlentities($this->error_message));
-        return $errormsg;
-    }    
-    //-------Private Helper functions-----------
-    
-    function HandleError($err)
-    {
-        $this->error_message .= $err."\r\n";
-    }
-    
-    function GetFromAddress()
-    {
-        if(!empty($this->from_address))
-        {
-            return $this->from_address;
-        }
+	var $username;
+	var $pwd;
+	var $database;
+	var $tablename;
+	var $connection;
+	var $rand_key;
 
-        $host = $_SERVER['SERVER_NAME'];
+	var $error_message;
 
-        $from ="no-reply@$host";
-        return $from;
-    } 
-    
-    function ValidateRegistrationSubmission()
-    {
-        //This is a hidden input field. Humans won't fill this field.
-        if(!empty($_POST[$this->GetSpamTrapInputName()]) )
-        {
-            //The proper error is not given intentionally
-            $this->HandleError("Automated submission prevention: case 2 failed");
-            return false;
-        }
-        
-        $validator = new FormValidator();
-        $validator->addValidation("firstname","req","Please fill in first name");
-        $validator->addValidation("lastname","req","Please fill in last name");
-        $validator->addValidation("institution","req","Please fill in institution/department");
-        $validator->addValidation("address","req","Please fill in address");
-        $validator->addValidation("phone","req","Please fill in phone number");
-        $validator->addValidation("email","req","Please fill in email");
-        $validator->addValidation("email","email","The input for email should be a valid email value");
+	//-----Initialization -------
+	function FGMembersite()
+	{
+		$this->sitename = 'doc.ic.ac.uk';
+		$this->rand_key = 'AzbKhnufuj558R4';
+	}
 
-        
-        if(!$validator->ValidateForm())
-        {
-            $error='';
-            $error_hash = $validator->GetErrors();
-            foreach($error_hash as $inpname => $inp_err)
-            {
-                $error .= $inpname.':'.$inp_err."\n";
-            }
-            $this->HandleError($error);
-            return false;
-        }        
-        return true;
-    }
-    
-    function CollectRegistrationSubmission(&$formvars)
-    {
-        $formvars['firstname'] = $this->Sanitize($_POST['firstname']);
-        $formvars['lastname'] = $this->Sanitize($_POST['lastname']);
-        $formvars['institution'] = $this->Sanitize($_POST['institution']);
-        $formvars['address'] = $this->Sanitize($_POST['address']);
-        $formvars['phone'] = $this->Sanitize($_POST['phone']);
-        $formvars['email'] = $this->Sanitize($_POST['email']);
-        $formvars['dietary'] = $this->Sanitize($_POST['dietary']);
+	function SetAdminEmail($email_1, $email_2 = '', $email_3 = '', $email_4 = '')
+	{
+		$this->admin_email_1 = $email_1;
+		$this->admin_email_2 = $email_2;
+		$this->admin_email_3 = $email_3;
+		$this->admin_email_4 = $email_4;
+	}
+
+	function SetWebsiteName($sitename)
+	{
+		$this->sitename = $sitename;
+	}
+
+	function SetRandomKey($key)
+	{
+		$this->rand_key = $key;
+	}
+
+	//-------Main Operations ----------------------
+	function RegisterUser()
+	{
+		if(!isset($_POST['submitted']))
+		{
+			return false;
+		}
+
+		$formvars = array();
+
+		if(!$this->ValidateRegistrationSubmission())
+		{
+			return false;
+		}
+
+		$this->CollectRegistrationSubmission($formvars);
+
+		if(!$this->SaveToCSV($formvars))
+		{
+			return false;
+		}
+
+		//if(!$this->SendUserRegistrationEmail($formvars))
+		//{
+		//    return false;
+		//}
+
+		$this->SendAdminIntimationEmail($formvars);
+
+		return true;
+	}
+
+	//-------Public Helper functions -------------
+	function GetSelfScript()
+	{
+		return htmlentities($_SERVER['PHP_SELF']);
+	}    
+
+	function SafeDisplay($value_name)
+	{
+		if(empty($_POST[$value_name]))
+		{
+			return'';
+		}
+		return htmlentities($_POST[$value_name]);
+	}
+
+	function RedirectToURL($url)
+	{
+		header("Location: $url");
+		exit;
+	}
+
+	function GetSpamTrapInputName()
+	{
+		return 'sp'.md5('KHGdnbvsgst'.$this->rand_key);
+	}
+
+	function GetErrorMessage()
+	{
+		if(empty($this->error_message))
+		{
+			return '';
+		}
+		$errormsg = nl2br(htmlentities($this->error_message));
+		return $errormsg;
+	}    
+	//-------Private Helper functions-----------
+
+	function HandleError($err)
+	{
+		$this->error_message .= $err."\r\n";
+	}
+
+	function GetFromAddress()
+	{
+		if(!empty($this->from_address))
+		{
+			return $this->from_address;
+		}
+
+		$host = $_SERVER['SERVER_NAME'];
+
+		$from ="no-reply@$host";
+		return $from;
+	} 
+
+	function ValidateRegistrationSubmission()
+	{
+		//This is a hidden input field. Humans won't fill this field.
+		if(!empty($_POST[$this->GetSpamTrapInputName()]) )
+		{
+			//The proper error is not given intentionally
+			$this->HandleError("Automated submission prevention: case 2 failed");
+			return false;
+		}
+
+		$validator = new FormValidator();
+		$validator->addValidation("firstname","req","Please fill in first name");
+		$validator->addValidation("lastname","req","Please fill in last name");
+		$validator->addValidation("institution","req","Please fill in institution/department");
+		$validator->addValidation("address","req","Please fill in address");
+		$validator->addValidation("phone","req","Please fill in phone number");
+		$validator->addValidation("email","req","Please fill in email");
+		$validator->addValidation("email","email","The input for email should be a valid email value");
+
+
+		if(!$validator->ValidateForm())
+		{
+			$error='';
+			$error_hash = $validator->GetErrors();
+			foreach($error_hash as $inpname => $inp_err)
+			{
+				$error .= $inpname.':'.$inp_err."\n";
+			}
+			$this->HandleError($error);
+			return false;
+		}        
+		return true;
+	}
+
+	function CollectRegistrationSubmission(&$formvars)
+	{
+		$formvars['firstname'] = $this->Sanitize($_POST['firstname']);
+		$formvars['lastname'] = $this->Sanitize($_POST['lastname']);
+		$formvars['institution'] = $this->Sanitize($_POST['institution']);
+		$formvars['address'] = $this->Sanitize($_POST['address']);
+		$formvars['phone'] = $this->Sanitize($_POST['phone']);
+		$formvars['email'] = $this->Sanitize($_POST['email']);
+		$formvars['dietary'] = $this->Sanitize($_POST['dietary']);
 		if ($formvars['dietary'] == '') {
 			$formvars['dietary'] = "None";
 		}
-    }
-    
-    function SendUserRegistrationEmail(&$formvars)
-    {
-        $mailer = new PHPMailer();
-        
-        $mailer->CharSet = 'utf-8';
-        
-        $mailer->AddAddress($formvars['email'],$formvars['firstname']." ".$formvars['lastname']);
-        
-        $mailer->Subject = "Your registration for the First OpenSPL Summer School Symposium";
+	}
 
-        $mailer->FromName = "OpenSPL Summer School Symposium";
-        
+	function SendUserRegistrationEmail(&$formvars)
+	{
+		$mailer = new PHPMailer();
+
+		$mailer->CharSet = 'utf-8';
+
+		$mailer->AddAddress($formvars['email'],$formvars['firstname']." ".$formvars['lastname']);
+
+		$mailer->Subject = "Your registration for the First OpenSPL Summer School Symposium";
+
+		$mailer->FromName = "OpenSPL Summer School Symposium";
+
 		$mailer->From = $this->GetFromAddress();        
 
 		$mailer->Body ="Hello ".$formvars['firstname'].",\r\n\r\n".
