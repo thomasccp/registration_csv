@@ -266,7 +266,7 @@ class FGMembersite
         "Address: ".$formvars['address']."\r\n".
         "Phone number: ".$formvars['phone']."\r\n".
         "Email: ".$formvars['email']."\r\n".
-        "Dietary requirement: ".$formvars['dierary']."\r\n";
+        "Dietary requirement: ".$formvars['dietary']."\r\n";
         
         if(!$mailer->Send())
         {
