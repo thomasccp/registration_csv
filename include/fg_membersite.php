@@ -210,115 +210,115 @@ class FGMembersite
 
         $mailer->FromName = "OpenSPL Summer School Symposium";
         
-        $mailer->From = $this->GetFromAddress();        
+		$mailer->From = $this->GetFromAddress();        
 
-        $mailer->Body ="Hello ".$formvars['firstname'].",\r\n\r\n".
-		"Thank you very much for your interest in attending the First OpenSPL Summer School Symposium. Your registration is confirmed and further information about the schedule and location of this event will be sent to you. For further information, please contact w.luk@imperial.ac.uk\r\n\r\n".
-		"Here are your provided details:\r\n\r\n".
-        "Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
-        "Institution/department: ".$formvars['institution']."\r\n".
-        "Address: ".$formvars['address']."\r\n".
-        "Phone number: ".$formvars['phone']."\r\n".
-        "Email: ".$formvars['email']."\r\n".
-		"Dietary requirement: ".$formvars['dierary']."\r\n\r\n";
+		$mailer->Body ="Hello ".$formvars['firstname'].",\r\n\r\n".
+			"Thank you very much for your interest in attending the First OpenSPL Summer School Symposium. Your registration is confirmed and further information about the schedule and location of this event will be sent to you. For further information, please contact w.luk@imperial.ac.uk\r\n\r\n".
+			"Here are your provided details:\r\n\r\n".
+			"Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
+			"Institution/department: ".$formvars['institution']."\r\n".
+			"Address: ".$formvars['address']."\r\n".
+			"Phone number: ".$formvars['phone']."\r\n".
+			"Email: ".$formvars['email']."\r\n".
+			"Dietary requirement: ".$formvars['dierary']."\r\n\r\n";
 
-        if(!$mailer->Send())
-        {
-            $this->HandleError("Failed sending registration confirmation email.");
-            return false;
-        }
-        return true;
-    }
+		if(!$mailer->Send())
+		{
+			$this->HandleError("Failed sending registration confirmation email.");
+			return false;
+		}
+		return true;
+	}
 
-    function SendAdminIntimationEmail(&$formvars)
-    {
-        if(empty($this->admin_email_1))
-        {
-            return false;
-        }
-        $mailer = new PHPMailer();
-        
-        $mailer->CharSet = 'utf-8';
-        
-        $mailer->AddAddress($this->admin_email_1);
-        if(!empty($this->admin_email_2))
-        {
-        	$mailer->AddAddress($this->admin_email_2);
-        	if(!empty($this->admin_email_3))
-        	{
-        		$mailer->AddAddress($this->admin_email_3);
-        		if(!empty($this->admin_email_4))
-        		{
-        			$mailer->AddAddress($this->admin_email_4);
+	function SendAdminIntimationEmail(&$formvars)
+	{
+		if(empty($this->admin_email_1))
+		{
+			return false;
+		}
+		$mailer = new PHPMailer();
+
+		$mailer->CharSet = 'utf-8';
+
+		$mailer->AddAddress($this->admin_email_1);
+		if(!empty($this->admin_email_2))
+		{
+			$mailer->AddAddress($this->admin_email_2);
+			if(!empty($this->admin_email_3))
+			{
+				$mailer->AddAddress($this->admin_email_3);
+				if(!empty($this->admin_email_4))
+				{
+					$mailer->AddAddress($this->admin_email_4);
 				}
 			}
 		}
-        
-        $mailer->Subject = "The First OpenSPL Summer School Symposium new registration: ".$formvars['firstname']." ".$formvars['lastname'];
 
-        $mailer->FromName = "OpenSPL Summer School Symposium";        
-        
-        $mailer->From = $this->GetFromAddress();         
-        
-        $mailer->Body ="A new person is registered for the First OpenSPL Summer School Symposium:\r\n\r\n".
-        "Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
-        "Institution/department: ".$formvars['institution']."\r\n".
-        "Address: ".$formvars['address']."\r\n".
-        "Phone number: ".$formvars['phone']."\r\n".
-        "Email: ".$formvars['email']."\r\n".
-        "Dietary requirement: ".$formvars['dietary']."\r\n";
-        
-        if(!$mailer->Send())
-        {
-            return false;
-        }
-        return true;
-    }
-    
-    function SaveToCSV(&$formvars)
-    {
+		$mailer->Subject = "The First OpenSPL Summer School Symposium new registration: ".$formvars['firstname']." ".$formvars['lastname'];
+
+		$mailer->FromName = "OpenSPL Summer School Symposium";        
+
+		$mailer->From = $this->GetFromAddress();         
+
+		$mailer->Body ="A new person is registered for the First OpenSPL Summer School Symposium:\r\n\r\n".
+			"Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
+			"Institution/department: ".$formvars['institution']."\r\n".
+			"Address: ".$formvars['address']."\r\n".
+			"Phone number: ".$formvars['phone']."\r\n".
+			"Email: ".$formvars['email']."\r\n".
+			"Dietary requirement: ".$formvars['dietary']."\r\n";
+
+		if(!$mailer->Send())
+		{
+			return false;
+		}
+		return true;
+	}
+
+	function SaveToCSV(&$formvars)
+	{
 		$cvsData = "\"".$formvars['firstname']."\",\"".$formvars['lastname']."\",\"".$formvars['institution']."\",\"".$formvars['address']."\",\"".$formvars['phone']."\",\"".$formvars['email']."\",\"".$formvars['dietary']."\"".PHP_EOL; 
 		$fp = fopen("data/registration_data.csv", "a"); 
-	
+
 		if($fp) 
 		{ 
 			fwrite($fp,$cvsData); // Write information to the file 
 			fclose($fp); // Close the file 
 		} 
-        return true;
+		return true;
 	}
 
  /*
-    Sanitize() function removes any potential threat from the
-    data submitted. Prevents email injections or any other hacker attempts.
-    if $remove_nl is true, newline chracters are removed from the input.
-    */
-    function Sanitize($str,$remove_nl=true)
-    {
-        $str = $this->StripSlashes($str);
+	Sanitize() function removes any potential threat from the
+	data submitted. Prevents email injections or any other hacker attempts.
+	if $remove_nl is true, newline chracters are removed from the input.
+  */
+	function Sanitize($str,$remove_nl=true)
+	{
+		$str = $this->StripSlashes($str);
 
-        if($remove_nl)
-        {
-            $injections = array('/(\n+)/i',
-                '/(\r+)/i',
-                '/(\t+)/i',
-                '/(%0A+)/i',
-                '/(%0D+)/i',
-                '/(%08+)/i',
-                '/(%09+)/i'
-                );
-            $str = preg_replace($injections,'',$str);
-        }
+		if($remove_nl)
+		{
+			$injections = array('/(\n+)/i',
+				'/(\r+)/i',
+				'/(\t+)/i',
+				'/(%0A+)/i',
+				'/(%0D+)/i',
+				'/(%08+)/i',
+				'/(%09+)/i'
+			);
+			$str = preg_replace($injections,'',$str);
+		}
 
-        return $str;
-    }    
-    function StripSlashes($str)
-    {
-        if(get_magic_quotes_gpc())
-        {
-            $str = stripslashes($str);
-        }
-        return $str;
-    }    
+		return $str;
+	}    
+	function StripSlashes($str)
+	{
+		if(get_magic_quotes_gpc())
+		{
+			$str = stripslashes($str);
+		}
+		return $str;
+	}    
 }
 ?>
