@@ -26,6 +26,7 @@ class FGMembersite
     var $admin_email_1;
     var $admin_email_2;
     var $admin_email_3;
+    var $admin_email_4;
     var $from_address;
     
     var $username;
@@ -44,11 +45,12 @@ class FGMembersite
         $this->rand_key = 'AzbKhnufuj558R4';
     }
     
-    function SetAdminEmail($email_1, $email_2 = '', $email_3 = '')
+    function SetAdminEmail($email_1, $email_2 = '', $email_3 = '', $email_4 = '')
     {
         $this->admin_email_1 = $email_1;
         $this->admin_email_2 = $email_2;
         $this->admin_email_3 = $email_3;
+        $this->admin_email_4 = $email_4;
     }
     
     function SetWebsiteName($sitename)
@@ -83,10 +85,10 @@ class FGMembersite
             return false;
         }
         
-        if(!$this->SendUserRegistrationEmail($formvars))
-        {
-            return false;
-        }
+        //if(!$this->SendUserRegistrationEmail($formvars))
+        //{
+        //    return false;
+        //}
 
         $this->SendAdminIntimationEmail($formvars);
         
@@ -204,21 +206,21 @@ class FGMembersite
         
         $mailer->AddAddress($formvars['email'],$formvars['firstname']." ".$formvars['lastname']);
         
-        $mailer->Subject = "Your registration for OpenSPL Summer School";
+        $mailer->Subject = "Your registration for the First OpenSPL Summer School Symposium";
 
-        $mailer->FromName = "OpenSPL Summer School";        
+        $mailer->FromName = "OpenSPL Summer School Symposium";
         
         $mailer->From = $this->GetFromAddress();        
 
         $mailer->Body ="Hello ".$formvars['firstname'].",\r\n\r\n".
-        "Thank you for your registration for OpenSPL Summber School. Here are your details:\r\n\r\n".
+		"Thank you very much for your interest in attending the First OpenSPL Summer School Symposium. Your registration is confirmed and further information about the schedule and location of this event will be sent to you. For further information, please contact w.luk@imperial.ac.uk\r\n\r\n".
+		"Here are your provided details:\r\n\r\n".
         "Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
         "Institution/department: ".$formvars['institution']."\r\n".
         "Address: ".$formvars['address']."\r\n".
         "Phone number: ".$formvars['phone']."\r\n".
         "Email: ".$formvars['email']."\r\n".
-		"Dietary requirement: ".$formvars['dierary']."\r\n\r\n".
-		"For further information, please contact w.luk@imperial.ac.uk\r\n";
+		"Dietary requirement: ".$formvars['dierary']."\r\n\r\n";
 
         if(!$mailer->Send())
         {
@@ -245,16 +247,20 @@ class FGMembersite
         	if(!empty($this->admin_email_3))
         	{
         		$mailer->AddAddress($this->admin_email_3);
+        		if(!empty($this->admin_email_4))
+        		{
+        			$mailer->AddAddress($this->admin_email_4);
+				}
 			}
 		}
         
-        $mailer->Subject = "OpenSPL Summer School new registration: ".$formvars['firstname']." ".$formvars['lastname'];
+        $mailer->Subject = "The First OpenSPL Summer School Symposium new registration: ".$formvars['firstname']." ".$formvars['lastname'];
 
-        $mailer->FromName = "OpenSPL Summer School";        
+        $mailer->FromName = "OpenSPL Summer School Symposium";        
         
         $mailer->From = $this->GetFromAddress();         
         
-        $mailer->Body ="A new person is registered for OpenSPL Summer School:\r\n\r\n".
+        $mailer->Body ="A new person is registered for the First OpenSPL Summer School Symposium:\r\n\r\n".
         "Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
         "Institution/department: ".$formvars['institution']."\r\n".
         "Address: ".$formvars['address']."\r\n".

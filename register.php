@@ -15,7 +15,7 @@ if(isset($_POST['submitted']))
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
 <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-	<title>OpenSPL Summer School Registration</title>
+	<title>The First OpenSPL Summer School Symposium Registration</title>
 	<link rel="STYLESHEET" type="text/css" href="style/fg_membersite.css" />
 	<script type='text/javascript' src='scripts/gen_validatorv31.js'></script>
 </head>
@@ -31,7 +31,7 @@ if(isset($_POST['submitted']))
 <div id='fg_membersite'>
 <form id='register' action='<?php echo $fgmembersite->GetSelfScript(); ?>' method='post' accept-charset='UTF-8'>
 <fieldset >
-<legend>OpenSPL Summer School Registration</legend>
+<legend>The First OpenSPL Summer School Symposium Registration</legend>
 
 <input type='hidden' name='submitted' id='submitted' value='1'/>
 
