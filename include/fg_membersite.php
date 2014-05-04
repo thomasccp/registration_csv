@@ -194,7 +194,7 @@ class FGMembersite
         $formvars['email'] = $this->Sanitize($_POST['email']);
         $formvars['dietary'] = $this->Sanitize($_POST['dietary']);
 		if ($formvars['dietary'] == '') {
-			$formvars['dietary'] = 'Nil';
+			$formvars['dietary'] = "None";
 		}
     }
     
