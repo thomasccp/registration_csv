@@ -278,7 +278,7 @@ class FGMembersite
     function SaveToCSV(&$formvars)
     {
 		$cvsData = "\"".$formvars['firstname']."\",\"".$formvars['lastname']."\",\"".$formvars['institution']."\",\"".$formvars['address']."\",\"".$formvars['phone']."\",\"".$formvars['email']."\",\"".$formvars['dietary']."\"".PHP_EOL; 
-		$fp = fopen("registration_data.csv", "a"); 
+		$fp = fopen("data/registration_data.csv", "a"); 
 	
 		if($fp) 
 		{ 
