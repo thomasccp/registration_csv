@@ -1,23 +1,1009 @@
-#!/usr/bin/php
-<?PHP
-require_once("./include/membersite_config.php");
-
-if(isset($_POST['submitted']))
-{
-	if($fgmembersite->RegisterUser())
-	{
-		$fgmembersite->RedirectToURL("thank-you.html");
-	}
-}
-
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
 <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-	<title>The First OpenSPL Summer School Symposium Registration</title>
-	<link rel="STYLESHEET" type="text/css" href="style/fg_membersite.css" />
-	<script type='text/javascript' src='scripts/gen_validatorv31.js'></script>
+	<title>OpenSPL Summer School Symposium Registration</title>
+	<style type="text/css" style="display:none">/*
+Registration/Login Form by html-form-guide.com
+You can customize all the aspects of the form in this style sheet
+ */
+
+#fg_membersite fieldset
+{
+	width: 450px;
+	padding:30px;
+	border:2px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;   
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#fg_membersite legend, #fg_membersite h2
+{
+	font-family : Arial, sans-serif;
+	font-size: 1.3em;
+	font-weight:bold;
+	color:#333;
+	text-align:center;
+}
+
+#fg_membersite label
+{
+	font-family : Arial, sans-serif;
+	font-size:0.8em;
+	font-weight: bold;
+}
+
+#fg_membersite input[type="text"],#fg_membersite textarea,
+#fg_membersite input[type="password"]
+{
+	font-family : Arial, Verdana, sans-serif;
+	font-size: 0.8em;
+	line-height:140%;
+	color : #000; 
+	padding : 3px; 
+	border : 1px solid #999;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+
+}
+
+#fg_membersite input[type="text"],
+#fg_membersite input[type="password"]
+{
+	height:18px;
+	width:420px;
+}
+
+#fg_membersite #scaptcha
+{
+	width:60px;
+	height:18px;
+}
+
+#fg_membersite input[type="submit"]
+{
+	width:100px;
+	height:30px;
+	padding-left:0px;
+}
+
+#fg_membersite textarea
+{
+	height:120px;
+	width:310px;
+}
+
+#fg_membersite input[type="text"]:focus,
+#fg_membersite textarea:focus
+{
+	color : #009;
+	border : 1px solid #990000;
+	background-color : #ffff99;
+	font-weight:bold;
+}
+
+#fg_membersite .container
+{
+	margin-top:8px;
+	margin-bottom: 10px;
+}
+
+#fg_membersite .error
+{
+	font-family: Verdana, Arial, sans-serif; 
+	font-size: 0.7em;
+	color: #900;
+	background-color : #ffff00;
+}
+
+#fg_membersite #register_password_errorloc
+{
+	clear:both;
+}
+
+#fg_membersite  fieldset#antispam
+{
+	padding:2px;
+	border-top:1px solid #EEE;
+	border-left:0;
+	border-right:0;
+	border-bottom:0;
+	width:350px;
+}
+
+#fg_membersite fieldset#antispam legend
+{
+	font-family : Arial, sans-serif;
+	font-size: 0.8em;
+	font-weight:bold;
+	color:#333;   
+}
+
+#fg_membersite .short_explanation
+{
+	font-family : Arial, sans-serif;
+	font-size: 0.6em;
+	color:#333;   
+}
+
+/* spam_trap: This input is hidden. This is here to trick the spam bots*/
+#fg_membersite .spmhidip
+{
+	display:none;
+	width:10px;
+	height:3px;
+}
+#fg_membersite #fg_crdiv
+{
+	font-family : Arial, sans-serif;
+	font-size: 0.3em;
+	opacity: .2;
+	-moz-opacity: .2;
+	filter: alpha(opacity=20);   
+}
+#fg_membersite  #fg_crdiv p
+{
+	display:none;
+}
+
+#fg_membersite_content li
+{
+	font-family : Arial, sans-serif;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+#fg_membersite_content
+{
+	font-family : Arial, sans-serif;
+	font-size: 0.9em;
+	line-height: 150%
+}
+
+#fg_membersite_content h2
+{
+	font-family : Arial, sans-serif;
+	font-size: 1.5em;
+	font-weight:bold;
+	color:#333;
+}
+
+#page-area {
+	width: 40em;
+	overflow: hidden;  
+	margin: 0px auto 2em;
+	font-size: 1em;
+}
+
+#header {
+	width: 100%;
+	position: relative;
+}
+
+</style>
+
+	<script type='text/javascript'  style="display:none">
+<!--
+/*
+  -------------------------------------------------------------------------
+            JavaScript Form Validator (gen_validatorv31.js)
+              Version 3.1
+   Copyright (C) 2003-2008 JavaScript-Coder.com. All rights reserved.
+   You can freely use this script in your Web pages.
+   You may adapt this script for your own needs, provided these opening credit
+    lines are kept intact.
+      
+   The Form validation script is distributed free from JavaScript-Coder.com
+   For updates, please visit:
+   http://www.javascript-coder.com/html-form/javascript-form-validation.phtml
+   
+   Questions & comments please send to support@javascript-coder.com
+  -------------------------------------------------------------------------  
+*/
+function Validator(frmname)
+{
+  this.formobj=document.forms[frmname];
+   if(!this.formobj)
+   {
+     alert("Error: couldnot get Form object "+frmname);
+      return;
+   }
+   if(this.formobj.onsubmit)
+   {
+    this.formobj.old_onsubmit = this.formobj.onsubmit;
+    this.formobj.onsubmit=null;
+   }
+   else
+   {
+    this.formobj.old_onsubmit = null;
+   }
+   this.formobj._sfm_form_name=frmname;
+   this.formobj.onsubmit=form_submit_handler;
+   this.addValidation = add_validation;
+   this.setAddnlValidationFunction=set_addnl_vfunction;
+   this.clearAllValidations = clear_all_validations;
+    this.disable_validations = false;//new
+    document.error_disp_handler = new sfm_ErrorDisplayHandler();
+    this.EnableOnPageErrorDisplay=validator_enable_OPED;
+   this.EnableOnPageErrorDisplaySingleBox=validator_enable_OPED_SB;
+    this.show_errors_together=true;
+    this.EnableMsgsTogether=sfm_enable_show_msgs_together;
+}
+function set_addnl_vfunction(functionname)
+{
+  this.formobj.addnlvalidation = functionname;
+}
+function sfm_enable_show_msgs_together()
+{
+    this.show_errors_together=true;
+    this.formobj.show_errors_together=true;
+}
+function clear_all_validations()
+{
+   for(var itr=0;itr < this.formobj.elements.length;itr++)
+   {
+      this.formobj.elements[itr].validationset = null;
+   }
+}
+function form_submit_handler()
+{
+   var bRet = true;
+    document.error_disp_handler.clear_msgs();
+   for(var itr=0;itr < this.elements.length;itr++)
+   {
+      if(this.elements[itr].validationset &&
+      !this.elements[itr].validationset.validate())
+      {
+        bRet = false;
+      }
+        if(!bRet && !this.show_errors_together)
+        {
+          break;
+        }
+   }
+    if(!bRet)
+    {
+      document.error_disp_handler.FinalShowMsg();
+      return false;
+    }
+
+   if(this.addnlvalidation)
+   {
+     str =" var ret = "+this.addnlvalidation+"()";
+     eval(str);
+    if(!ret) return ret;
+   }
+   return true;
+}
+function add_validation(itemname,descriptor,errstr)
+{
+   var condition = null;
+   if(arguments.length > 3)
+   {
+    condition = arguments[3]; 
+   }
+  if(!this.formobj)
+   {
+      alert("Error: The form object is not set properly");
+      return;
+   }//if
+   var itemobj = this.formobj[itemname];
+    if(itemobj.length && isNaN(itemobj.selectedIndex) )
+    //for radio button; don't do for 'select' item
+   {
+      itemobj = itemobj[0];
+   }  
+  if(!itemobj)
+   {
+      alert("Error: Couldnot get the input object named: "+itemname);
+      return;
+   }
+   if(!itemobj.validationset)
+   {
+      itemobj.validationset = new ValidationSet(itemobj,this.show_errors_together);
+   }
+   itemobj.validationset.add(descriptor,errstr,condition);
+    itemobj.validatorobj=this;
+}
+function validator_enable_OPED()
+{
+    document.error_disp_handler.EnableOnPageDisplay(false);
+}
+
+function validator_enable_OPED_SB()
+{
+   document.error_disp_handler.EnableOnPageDisplay(true);
+}
+function sfm_ErrorDisplayHandler()
+{
+  this.msgdisplay = new AlertMsgDisplayer();
+  this.EnableOnPageDisplay= edh_EnableOnPageDisplay;
+  this.ShowMsg=edh_ShowMsg;
+  this.FinalShowMsg=edh_FinalShowMsg;
+  this.all_msgs=new Array();
+  this.clear_msgs=edh_clear_msgs;
+}
+function edh_clear_msgs()
+{
+    this.msgdisplay.clearmsg(this.all_msgs);
+    this.all_msgs = new Array();
+}
+function edh_FinalShowMsg()
+{
+    this.msgdisplay.showmsg(this.all_msgs);
+}
+function edh_EnableOnPageDisplay(single_box)
+{
+   if(true == single_box)
+   {
+      this.msgdisplay = new SingleBoxErrorDisplay();
+   }
+   else
+   {
+      this.msgdisplay = new DivMsgDisplayer();     
+   }
+}
+function edh_ShowMsg(msg,input_element)
+{
+   
+   var objmsg = new Array();
+   objmsg["input_element"] = input_element;
+   objmsg["msg"] =  msg;
+   this.all_msgs.push(objmsg);
+}
+function AlertMsgDisplayer()
+{
+  this.showmsg = alert_showmsg;
+  this.clearmsg=alert_clearmsg;
+}
+function alert_clearmsg(msgs)
+{
+
+}
+function alert_showmsg(msgs)
+{
+    var whole_msg="";
+    var first_elmnt=null;
+    for(var m in msgs)
+    {
+        if(null == first_elmnt)
+        {
+            first_elmnt = msgs[m]["input_element"];
+        }
+        whole_msg += msgs[m]["msg"] + "\n";
+    }
+   
+    alert(whole_msg);
+
+    if(null != first_elmnt)
+    {
+        first_elmnt.focus();
+    }
+}
+function sfm_show_error_msg(msg,input_elmt)
+{
+    document.error_disp_handler.ShowMsg(msg,input_elmt);
+}
+function SingleBoxErrorDisplay()
+{
+ this.showmsg=sb_div_showmsg;
+ this.clearmsg=sb_div_clearmsg;
+}
+
+function sb_div_clearmsg(msgs)
+{
+   var divname = form_error_div_name(msgs);
+   show_div_msg(divname,"");
+}
+
+function sb_div_showmsg(msgs)
+{
+   var whole_msg="<ul>\n";
+   for(var m in msgs)
+    {
+        whole_msg += "<li>" + msgs[m]["msg"] + "</li>\n";
+    }
+   whole_msg += "</ul>";
+   var divname = form_error_div_name(msgs);
+   show_div_msg(divname,whole_msg);
+}
+function form_error_div_name(msgs)
+{
+   var input_element= null;
+
+   for(var m in msgs)
+   {
+    input_element = msgs[m]["input_element"];
+    if(input_element){break;}
+   }
+
+   var divname ="";
+   if(input_element)
+   {
+    divname = input_element.form._sfm_form_name + "_errorloc";
+   }
+
+   return divname;
+}
+function DivMsgDisplayer()
+{
+ this.showmsg=div_showmsg;
+ this.clearmsg=div_clearmsg;
+}
+function div_clearmsg(msgs)
+{
+    for(var m in msgs)
+    {
+        var divname = element_div_name(msgs[m]["input_element"]);
+        show_div_msg(divname,"");
+    }
+}
+function element_div_name(input_element)
+{
+  var divname = input_element.form._sfm_form_name + "_" + 
+                   input_element.name + "_errorloc";
+
+  divname = divname.replace(/[\[\]]/gi,"");
+
+  return divname;
+}
+function div_showmsg(msgs)
+{
+    var whole_msg;
+    var first_elmnt=null;
+    for(var m in msgs)
+    {
+        if(null == first_elmnt)
+        {
+            first_elmnt = msgs[m]["input_element"];
+        }
+        var divname = element_div_name(msgs[m]["input_element"]);
+        show_div_msg(divname,msgs[m]["msg"]);
+    }
+    if(null != first_elmnt)
+    {
+        first_elmnt.focus();
+    }
+}
+function show_div_msg(divname,msgstring)
+{
+   if(divname.length<=0) return false;
+
+   if(document.layers)
+   {
+      divlayer = document.layers[divname];
+        if(!divlayer){return;}
+      divlayer.document.open();
+      divlayer.document.write(msgstring);
+      divlayer.document.close();
+   }
+   else
+   if(document.all)
+   {
+      divlayer = document.all[divname];
+        if(!divlayer){return;}
+      divlayer.innerHTML=msgstring;
+   }
+   else
+   if(document.getElementById)
+   {
+      divlayer = document.getElementById(divname);
+        if(!divlayer){return;}
+      divlayer.innerHTML =msgstring;
+   }
+   divlayer.style.visibility="visible";   
+   return false;
+}
+function ValidationDesc(inputitem,desc,error,condition)
+{
+  this.desc=desc;
+   this.error=error;
+   this.itemobj = inputitem;
+   this.condition = condition;
+   this.validate=vdesc_validate;
+}
+function vdesc_validate()
+{
+   if(this.condition != null )
+   {
+      if(!eval(this.condition))
+      {
+         return true;
+      }
+   }
+   if(!validateInput(this.desc,this.itemobj,this.error))
+   {
+      this.itemobj.validatorobj.disable_validations=true;
+      this.itemobj.focus();
+      return false;
+   }
+   return true;
+}
+function ValidationSet(inputitem,msgs_together)
+{
+    this.vSet=new Array();
+   this.add= add_validationdesc;
+   this.validate= vset_validate;
+   this.itemobj = inputitem;
+    this.msgs_together = msgs_together;
+}
+function add_validationdesc(desc,error,condition)
+{
+  this.vSet[this.vSet.length]= 
+  new ValidationDesc(this.itemobj,desc,error,condition);
+}
+function vset_validate()
+{
+    var bRet = true;
+    for(var itr=0;itr<this.vSet.length;itr++)
+    {
+        bRet = bRet && this.vSet[itr].validate();
+        if(!bRet && !this.msgs_together)
+        {
+            break;
+        }
+    }
+    return bRet;
+}
+function validateEmail(email)
+{
+    var splitted = email.match("^(.+)@(.+)$");
+    if(splitted == null) return false;
+    if(splitted[1] != null )
+    {
+      var regexp_user=/^\"?[\w-_\.]*\"?$/;
+      if(splitted[1].match(regexp_user) == null) return false;
+    }
+    if(splitted[2] != null)
+    {
+      var regexp_domain=/^[\w-\.]*\.[A-Za-z]{2,4}$/;
+      if(splitted[2].match(regexp_domain) == null) 
+      {
+       var regexp_ip =/^\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\]$/;
+       if(splitted[2].match(regexp_ip) == null) return false;
+      }// if
+      return true;
+    }
+return false;
+}
+
+function IsCheckSelected(objValue,chkValue)
+{
+    var selected=false;
+   var objcheck = objValue.form.elements[objValue.name];
+    if(objcheck.length)
+   {
+      var idxchk=-1;
+      for(var c=0;c < objcheck.length;c++)
+      {
+         if(objcheck[c].value == chkValue)
+         {
+           idxchk=c;
+          break;
+         }//if
+      }//for
+      if(idxchk>= 0)
+      {
+        if(objcheck[idxchk].checked=="1")
+        {
+          selected=true;
+        }
+      }//if
+   }
+   else
+   {
+      if(objValue.checked == "1")
+      {
+         selected=true;
+      }//if
+   }//else  
+
+   return selected;
+}
+function TestDontSelectChk(objValue,chkValue,strError)
+{
+   var pass = true;
+   pass = IsCheckSelected(objValue,chkValue)?false:true;
+
+   if(pass==false)
+   {
+     if(!strError || strError.length ==0) 
+        { 
+         strError = "Can't Proceed as you selected "+objValue.name;  
+        }//if          
+     sfm_show_error_msg(strError,objValue);
+     
+   }
+    return pass;
+}
+function TestShouldSelectChk(objValue,chkValue,strError)
+{
+   var pass = true;
+
+   pass = IsCheckSelected(objValue,chkValue)?true:false;
+
+   if(pass==false)
+   {
+     if(!strError || strError.length ==0) 
+        { 
+         strError = "You should select"+objValue.name;  
+        }//if          
+     sfm_show_error_msg(strError,objValue);
+     
+   }
+    return pass;
+}
+function TestRequiredInput(objValue,strError)
+{
+ var ret = true;
+    if(eval(objValue.value.length) == 0) 
+    { 
+       if(!strError || strError.length ==0) 
+       { 
+         strError = objValue.name + " : Required Field"; 
+       }//if 
+       sfm_show_error_msg(strError,objValue); 
+       ret=false; 
+    }//if 
+return ret;
+}
+function TestMaxLen(objValue,strMaxLen,strError)
+{
+ var ret = true;
+    if(eval(objValue.value.length) > eval(strMaxLen)) 
+    { 
+      if(!strError || strError.length ==0) 
+      { 
+        strError = objValue.name + " : "+ strMaxLen +" characters maximum "; 
+      }//if 
+      sfm_show_error_msg(strError,objValue); 
+      ret = false; 
+    }//if 
+return ret;
+}
+function TestMinLen(objValue,strMinLen,strError)
+{
+ var ret = true;
+    if(eval(objValue.value.length) <  eval(strMinLen)) 
+    { 
+      if(!strError || strError.length ==0) 
+      { 
+        strError = objValue.name + " : " + strMinLen + " characters minimum  "; 
+      }//if               
+      sfm_show_error_msg(strError,objValue); 
+      ret = false;   
+    }//if 
+return ret;
+}
+function TestInputType(objValue,strRegExp,strError,strDefaultError)
+{
+   var ret = true;
+
+    var charpos = objValue.value.search(strRegExp); 
+    if(objValue.value.length > 0 &&  charpos >= 0) 
+    { 
+     if(!strError || strError.length ==0) 
+      { 
+        strError = strDefaultError;
+      }//if 
+      sfm_show_error_msg(strError,objValue); 
+      ret = false; 
+    }//if 
+ return ret;
+}
+function TestEmail(objValue,strError)
+{
+var ret = true;
+     if(objValue.value.length > 0 && !validateEmail(objValue.value)   ) 
+     { 
+       if(!strError || strError.length ==0) 
+       { 
+          strError = objValue.name+": Enter a valid Email address "; 
+       }//if                                               
+       sfm_show_error_msg(strError,objValue); 
+       ret = false; 
+     }//if 
+return ret;
+}
+function TestLessThan(objValue,strLessThan,strError)
+{
+var ret = true;
+     if(isNaN(objValue.value)) 
+     { 
+       sfm_show_error_msg(objValue.name +": Should be a number ",objValue); 
+       ret = false; 
+     }//if 
+     else
+     if(eval(objValue.value) >=  eval(strLessThan)) 
+     { 
+       if(!strError || strError.length ==0) 
+       { 
+         strError = objValue.name + " : value should be less than "+ strLessThan; 
+       }//if               
+       sfm_show_error_msg(strError,objValue); 
+       ret = false;                 
+      }//if   
+return ret;          
+}
+function TestGreaterThan(objValue,strGreaterThan,strError)
+{
+var ret = true;
+     if(isNaN(objValue.value)) 
+     { 
+       sfm_show_error_msg(objValue.name+": Should be a number ",objValue); 
+       ret = false; 
+     }//if 
+    else
+     if(eval(objValue.value) <=  eval(strGreaterThan)) 
+      { 
+        if(!strError || strError.length ==0) 
+        { 
+          strError = objValue.name + " : value should be greater than "+ strGreaterThan; 
+        }//if               
+        sfm_show_error_msg(strError,objValue);  
+        ret = false;
+      }//if  
+return ret;           
+}
+function TestRegExp(objValue,strRegExp,strError)
+{
+var ret = true;
+    if( objValue.value.length > 0 && 
+        !objValue.value.match(strRegExp) ) 
+    { 
+      if(!strError || strError.length ==0) 
+      { 
+        strError = objValue.name+": Invalid characters found "; 
+      }//if                                                               
+      sfm_show_error_msg(strError,objValue); 
+      ret = false;                   
+    }//if 
+return ret;
+}
+function TestDontSelect(objValue,dont_sel_value,strError)
+{
+var ret = true;
+     if(objValue.value == null) 
+     { 
+       sfm_show_error_msg("Error: dontselect command for non-select Item",objValue); 
+       ret = false; 
+     } 
+    else
+     if(objValue.value == dont_sel_value) 
+     { 
+      if(!strError || strError.length ==0) 
+       { 
+        strError = objValue.name+": Please Select one option "; 
+       }//if                                                               
+       sfm_show_error_msg(strError,objValue); 
+       ret =  false;                                   
+      } 
+return ret;
+}
+function TestSelectOneRadio(objValue,strError)
+{
+   var objradio = objValue.form.elements[objValue.name];
+   var one_selected=false;
+   for(var r=0;r < objradio.length;r++)
+   {
+     if(objradio[r].checked == "1")
+     {
+      one_selected=true;
+      break;
+     }
+   }
+   if(false == one_selected)
+   {
+      if(!strError || strError.length ==0) 
+       {
+       strError = "Please select one option from "+objValue.name;
+      }  
+     sfm_show_error_msg(strError,objValue);
+   }
+return one_selected;
+}
+
+function TestFileExtension(objValue,cmdvalue,strError)
+{
+    var ret=false;
+    var found=false;
+
+    if(objValue.value.length <= 0)
+    {//The 'required' validation is not done here
+        return true;
+    }
+   
+    var extns = cmdvalue.split(";");
+    for(var i=0;i < extns.length;i++)
+    {
+        ext = objValue.value.substr(objValue.value.length - extns[i].length,extns[i].length);
+        ext = ext.toLowerCase();
+        if(ext == extns[i])
+        {
+            found=true;break;
+        }
+    }
+    if(!found)
+    {
+       if(!strError || strError.length ==0) 
+       { 
+         strError = objValue.name + " allowed file extensions are: "+cmdvalue; 
+       }//if 
+       sfm_show_error_msg(strError,objValue); 
+       ret=false;        
+    }
+    else
+    {
+        ret=true;
+    }
+    return ret;
+}
+
+
+function validateInput(strValidateStr,objValue,strError) 
+{ 
+    var ret = true;
+    var epos = strValidateStr.search("="); 
+    var  command  = ""; 
+    var  cmdvalue = ""; 
+    if(epos >= 0) 
+    { 
+     command  = strValidateStr.substring(0,epos); 
+     cmdvalue = strValidateStr.substr(epos+1); 
+    } 
+    else 
+    { 
+     command = strValidateStr; 
+    } 
+    switch(command) 
+    { 
+        case "req": 
+        case "required": 
+         { 
+         ret = TestRequiredInput(objValue,strError)
+           break;             
+         }//case required 
+        case "maxlength": 
+        case "maxlen": 
+          { 
+          ret = TestMaxLen(objValue,cmdvalue,strError)
+             break; 
+          }//case maxlen 
+        case "minlength": 
+        case "minlen": 
+           { 
+          ret = TestMinLen(objValue,cmdvalue,strError)
+             break; 
+            }//case minlen 
+        case "alnum": 
+        case "alphanumeric": 
+           { 
+            ret = TestInputType(objValue,"[^A-Za-z0-9]",strError, 
+                  objValue.name+": Only alpha-numeric characters allowed ");
+            break; 
+           }
+        case "alnum_s": 
+        case "alphanumeric_space": 
+           { 
+            ret = TestInputType(objValue,"[^A-Za-z0-9\\s]",strError, 
+                  objValue.name+": Only alpha-numeric characters and space allowed ");
+            break; 
+           }         
+        case "num": 
+        case "numeric": 
+           { 
+                ret = TestInputType(objValue,"[^0-9]",strError, 
+                  objValue.name+": Only digits allowed ");
+                break;               
+           }
+        case "alphabetic": 
+        case "alpha": 
+           { 
+                ret = TestInputType(objValue,"[^A-Za-z]",strError, 
+                  objValue.name+": Only alphabetic characters allowed ");
+                break; 
+           }
+        case "alphabetic_space": 
+        case "alpha_s": 
+           { 
+                ret = TestInputType(objValue,"[^A-Za-z\\s]",strError, 
+                  objValue.name+": Only alphabetic characters and space allowed ");
+                break; 
+           }
+        case "email": 
+          { 
+            ret = TestEmail(objValue,strError);
+               break; 
+          }
+        case "lt": 
+        case "lessthan": 
+         { 
+            ret = TestLessThan(objValue,cmdvalue,strError);
+              break; 
+         }
+        case "gt": 
+        case "greaterthan": 
+         { 
+         ret = TestGreaterThan(objValue,cmdvalue,strError);
+            break; 
+         }//case greaterthan 
+        case "regexp": 
+         { 
+         ret = TestRegExp(objValue,cmdvalue,strError);
+           break; 
+         }
+        case "dontselect": 
+         { 
+          ret = TestDontSelect(objValue,cmdvalue,strError)
+             break; 
+         }
+      case "dontselectchk":
+      {
+         ret = TestDontSelectChk(objValue,cmdvalue,strError)
+         break;
+      }
+      case "shouldselchk":
+      {
+         ret = TestShouldSelectChk(objValue,cmdvalue,strError)
+         break;
+      }
+      case "selone_radio":
+      {
+         ret = TestSelectOneRadio(objValue,strError);
+          break;
+      }
+      case "file_extn":
+      {
+         ret = TestFileExtension(objValue,cmdvalue,strError);
+         break;
+      }      
+    }//switch 
+   return ret;
+}
+function VWZ_IsListItemSelected(listname,value)
+{
+ for(var i=0;i < listname.options.length;i++)
+ {
+  if(listname.options[i].selected == true &&
+   listname.options[i].value == value) 
+   {
+     return true;
+   }
+ }
+ return false;
+}
+function VWZ_IsChecked(objcheck,value)
+{
+ if(objcheck.length)
+ {
+     for(var c=0;c < objcheck.length;c++)
+     {
+       if(objcheck[c].checked == "1" && 
+        objcheck[c].value == value)
+       {
+        return true; 
+       }
+     }
+ }
+ else
+ {
+  if(objcheck.checked == "1" )
+   {
+    return true; 
+   }    
+ }
+ return false;
+}
+/*
+   Copyright (C) 2003-2008 JavaScript-Coder.com . All rights reserved.
+*/
+//-->
+</script>
 </head>
 <body>
 
@@ -29,49 +1015,49 @@ if(isset($_POST['submitted']))
 
 <!-- Form Code Start -->
 <div id='fg_membersite'>
-<form id='register' action='<?php echo $fgmembersite->GetSelfScript(); ?>' method='post' accept-charset='UTF-8'>
+<form id='register' action='/~cpc10/registration/register.php' method='post' accept-charset='UTF-8'>
 <fieldset >
-<legend>The First OpenSPL Summer School Symposium Registration</legend>
+<legend>OpenSPL Summer School Symposium Registration</legend>
 
 <input type='hidden' name='submitted' id='submitted' value='1'/>
 
 <div class='short_explanation'>* required fields</div>
-<input type='text'  class='spmhidip' name='<?php echo $fgmembersite->GetSpamTrapInputName(); ?>' />
+<input type='text'  class='spmhidip' name='sp00fd25d54b9d2ecf2aae622d025b265f' />
 
-<div><span class='error'><?php echo $fgmembersite->GetErrorMessage(); ?></span></div>
+<div><span class='error'></span></div>
 <div class='container'>
 	<label for='firstname' >First Name*: </label><br/>
-	<input type='text' name='firstname' id='firstname' value='<?php echo $fgmembersite->SafeDisplay('firstname') ?>' maxlength="50" /><br/>
+	<input type='text' name='firstname' id='firstname' value='' maxlength="50" /><br/>
 	<span id='register_firstname_errorloc' class='error'></span>
 </div>
 <div class='container'>
 	<label for='lastname' >Last Name*: </label><br/>
-	<input type='text' name='lastname' id='lastname' value='<?php echo $fgmembersite->SafeDisplay('lastname') ?>' maxlength="50" /><br/>
+	<input type='text' name='lastname' id='lastname' value='' maxlength="50" /><br/>
 	<span id='register_lastname_errorloc' class='error'></span>
 </div>
 <div class='container'>
 	<label for='institution' >Institution/Department*: </label><br/>
-	<input type='text' name='institution' id='institution' value='<?php echo $fgmembersite->SafeDisplay('institution') ?>' maxlength="200" /><br/>
+	<input type='text' name='institution' id='institution' value='' maxlength="200" /><br/>
 	<span id='register_institution_errorloc' class='error'></span>
 </div>
 <div class='container'>
 	<label for='address' >Address*: </label><br/>
-	<input type='text' name='address' id='address' value='<?php echo $fgmembersite->SafeDisplay('address') ?>' maxlength="500" /><br/>
+	<input type='text' name='address' id='address' value='' maxlength="500" /><br/>
 	<span id='register_address_errorloc' class='error'></span>
 </div>
 <div class='container'>
 	<label for='phone' >Phone Number*: </label><br/>
-	<input type='text' name='phone' id='phone' value='<?php echo $fgmembersite->SafeDisplay('phone') ?>' maxlength="20" /><br/>
+	<input type='text' name='phone' id='phone' value='' maxlength="20" /><br/>
 	<span id='register_phone_errorloc' class='error'></span>
 </div>
 <div class='container'>
 	<label for='email' >Email*:</label><br/>
-	<input type='text' name='email' id='email' value='<?php echo $fgmembersite->SafeDisplay('email') ?>' maxlength="50" /><br/>
+	<input type='text' name='email' id='email' value='' maxlength="50" /><br/>
 	<span id='register_email_errorloc' class='error'></span>
 </div>
 <div class='container'>
 	<label for='dietary' >Dietary Requirements:</label><br/>
-	<input type='text' name='dietary' id='dietary' value='<?php echo $fgmembersite->SafeDisplay('dietary') ?>' maxlength="200" /><br/>
+	<input type='text' name='dietary' id='dietary' value='' maxlength="200" /><br/>
 	<span id='register_dietary_errorloc' class='error'></span>
 </div>
 
