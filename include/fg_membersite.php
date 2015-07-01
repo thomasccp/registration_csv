@@ -206,14 +206,14 @@ class FGMembersite
 
 		$mailer->AddAddress($formvars['email'],$formvars['firstname']." ".$formvars['lastname']);
 
-		$mailer->Subject = "Your registration for the First OpenSPL Summer School Symposium";
+		$mailer->Subject = "Your registration for OpenSPL Summer School Symposium";
 
 		$mailer->FromName = "OpenSPL Summer School Symposium";
 
 		$mailer->From = $this->GetFromAddress();        
 
 		$mailer->Body ="Hello ".$formvars['firstname'].",\r\n\r\n".
-			"Thank you very much for your interest in attending the First OpenSPL Summer School Symposium. Your registration is confirmed and further information about the schedule and location of this event will be sent to you. For further information, please contact w.luk@imperial.ac.uk\r\n\r\n".
+			"Thank you very much for your interest in attending OpenSPL Summer School Symposium. Your registration is confirmed and further information about the schedule and location of this event will be sent to you. For further information, please contact w.luk@imperial.ac.uk\r\n\r\n".
 			"Here are your provided details:\r\n\r\n".
 			"Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
 			"Institution/department: ".$formvars['institution']."\r\n".
@@ -254,13 +254,13 @@ class FGMembersite
 			}
 		}
 
-		$mailer->Subject = "The First OpenSPL Summer School Symposium new registration: ".$formvars['firstname']." ".$formvars['lastname'];
+		$mailer->Subject = "OpenSPL Summer School Symposium new registration: ".$formvars['firstname']." ".$formvars['lastname'];
 
 		$mailer->FromName = "OpenSPL Summer School Symposium";        
 
 		$mailer->From = $this->GetFromAddress();         
 
-		$mailer->Body ="A new person is registered for the First OpenSPL Summer School Symposium:\r\n\r\n".
+		$mailer->Body ="A new person is registered for OpenSPL Summer School Symposium:\r\n\r\n".
 			"Name: ".$formvars['firstname']." ".$formvars['lastname']."\r\n".
 			"Institution/department: ".$formvars['institution']."\r\n".
 			"Address: ".$formvars['address']."\r\n".
